@@ -13,8 +13,10 @@ import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
 import org.semanticweb.owlapi.util.OWLObjectDesharer;
 import org.springframework.core.env.PropertyResolver;
+import org.springframework.util.ResourceUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -36,7 +38,7 @@ import static org.apache.coyote.http11.Constants.a;
 @Slf4j
 public class Demo {
 
-    public static final String filePath = "/Users/wangjie_fourth/IdeaProjects/person/demo/src/main/resources/jena/liveIn.owl";
+    public static final String filePath = "liveIn.owl";
     public static final String base = "http://www.semanticweb.org/administrator/ontologies/2020/5/untitled-ontology-9";
     public static final PrefixManager pm = new DefaultPrefixManager(null, null, base);
     public static final OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
@@ -92,8 +94,7 @@ public class Demo {
         OWLClassAssertionAxiom classAssertion = df.getOWLClassAssertionAxiom(person, owlNamedIndividual);
         manager.addAxiom(ontology, classAssertion);
 
-        log.info("test");
-        File outFile = new File("/Users/wangjie_fourth/IdeaProjects/person/demo/src/main/resources/jena/liveIn.owl");
+        File outFile = new File(filePath);
         IRI outputIRI = IRI.create(outFile);
         try {
             log.info("保存owl文件");
@@ -122,7 +123,7 @@ public class Demo {
                 owlNamedIndividual1, owlNamedIndividual2);
         manager.addAxiom(ontology, propertyAssertion);
 
-        File outFile = new File("/Users/wangjie_fourth/IdeaProjects/person/demo/src/main/resources/jena/liveIn.owl");
+        File outFile = new File(filePath);
         IRI outputIRI = IRI.create(outFile);
         try {
             System.out.println("保存数据");
@@ -143,7 +144,7 @@ public class Demo {
         for (RemoveAxiom item : remover.getChanges()) {
             manager.applyChange(item);
         }
-        File outFile = new File("/Users/wangjie_fourth/IdeaProjects/person/demo/src/main/resources/jena/liveIn.owl");
+        File outFile = new File(filePath);
         IRI outputIRI = IRI.create(outFile);
         try {
             manager.saveOntology(ontology, outputIRI);
@@ -171,7 +172,12 @@ public class Demo {
 
         manager.removeAxiom(ontology, propertyAssertion);
 
-        File outFile = new File("/Users/wangjie_fourth/IdeaProjects/person/demo/src/main/resources/jena/liveIn.owl");
+        File outFile = null;
+        try {
+            outFile = ResourceUtils.getFile(filePath);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         IRI outputIRI = IRI.create(outFile);
         try {
             System.out.println("保存数据");
@@ -188,8 +194,9 @@ public class Demo {
 
     public static OWLOntology load(OWLOntologyManager manager) {
         StringBuilder content = new StringBuilder();
+        File outFile = new File(filePath);
         try {
-            List<String> lines = Files.readAllLines(Paths.get("/Users/wangjie_fourth/IdeaProjects/person/demo/src/main/resources/jena/liveIn.owl"), StandardCharsets.UTF_8);
+            List<String> lines = Files.readAllLines(outFile.toPath(), StandardCharsets.UTF_8);
             lines.forEach(content::append);
         } catch (IOException e) {
             throw new RuntimeException(e);
