@@ -1,5 +1,6 @@
 package com.jena.demo.service;
 
+import com.jena.demo.config.ConfigInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.StringDocumentSource;
@@ -12,7 +13,10 @@ import org.semanticweb.owlapi.reasoner.structural.StructuralReasoner;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
 import org.semanticweb.owlapi.util.OWLObjectDesharer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.PropertyResolver;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
@@ -36,17 +40,20 @@ import static org.apache.coyote.http11.Constants.a;
  * @Email wangjie_fourth@163.com
  **/
 @Slf4j
+@Component
 public class Demo {
 
-    public static final String filePath = "liveIn.owl";
+    @Autowired
+    private ConfigInfo configInfo;
+
     public static final String base = "http://www.semanticweb.org/administrator/ontologies/2020/5/untitled-ontology-9";
     public static final PrefixManager pm = new DefaultPrefixManager(null, null, base);
-    public static final OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-    public static final OWLDataFactory df = manager.getOWLDataFactory();
-    public static final OWLOntology ontology = load(manager);
 
 
-    public static boolean hasCLass(String className) {
+
+    public boolean hasCLass(String className) {
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        OWLOntology ontology = load(manager);
         System.out.println("================" + "获取所有类" + "==================");
         Set<OWLClass> classesInSignature = ontology.getClassesInSignature();
         for (OWLClass item : classesInSignature) {
@@ -58,7 +65,9 @@ public class Demo {
         return false;
     }
 
-    public static boolean hasOWLNamedIndividual(String owlNamedIndividualName) {
+    public boolean hasOWLNamedIndividual(String owlNamedIndividualName) {
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        OWLOntology ontology = load(manager);
         System.out.println("================" + "获取所有实例" + "==================");
         Set<OWLNamedIndividual> individualsInSignature = ontology.getIndividualsInSignature();
         for (OWLNamedIndividual item : individualsInSignature) {
@@ -72,7 +81,9 @@ public class Demo {
         return false;
     }
 
-    public static boolean hasObjectProperty(String objectPropertyName) {
+    public boolean hasObjectProperty(String objectPropertyName) {
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        OWLOntology ontology = load(manager);
         System.out.println("================" + "获取所有关系" + "==================");
         Set<OWLObjectProperty> objectPropertiesInSignature = ontology.getObjectPropertiesInSignature();
         System.out.println(objectPropertiesInSignature.size());
@@ -85,7 +96,10 @@ public class Demo {
         return false;
     }
 
-    public static void createOWLNamedIndividual(String className, String owlNamedIndividualName) {
+    public void createOWLNamedIndividual(String className, String owlNamedIndividualName) {
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        OWLDataFactory df = manager.getOWLDataFactory();
+        OWLOntology ontology = load(manager);
         if (!hasCLass(className)) {
             throw new RuntimeException("本体中不含有" + className);
         }
@@ -94,7 +108,7 @@ public class Demo {
         OWLClassAssertionAxiom classAssertion = df.getOWLClassAssertionAxiom(person, owlNamedIndividual);
         manager.addAxiom(ontology, classAssertion);
 
-        File outFile = new File(filePath);
+        File outFile = new File(configInfo.filePath);
         IRI outputIRI = IRI.create(outFile);
         try {
             log.info("保存owl文件");
@@ -104,7 +118,10 @@ public class Demo {
         }
     }
 
-    public static void createObjectPropertyForIndividual(String owlNameIndividualName1, String owlNameIndividualName2, String objectProperty) {
+    public void createObjectPropertyForIndividual(String owlNameIndividualName1, String owlNameIndividualName2, String objectProperty) {
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        OWLDataFactory df = manager.getOWLDataFactory();
+        OWLOntology ontology = load(manager);
         log.info("开始创建实例之间的关系");
         if (!hasOWLNamedIndividual(owlNameIndividualName1)) {
             throw new RuntimeException("本体中不存在" + owlNameIndividualName1 + "实例");
@@ -123,7 +140,7 @@ public class Demo {
                 owlNamedIndividual1, owlNamedIndividual2);
         manager.addAxiom(ontology, propertyAssertion);
 
-        File outFile = new File(filePath);
+        File outFile = new File(configInfo.filePath);
         IRI outputIRI = IRI.create(outFile);
         try {
             System.out.println("保存数据");
@@ -133,7 +150,10 @@ public class Demo {
         }
     }
 
-    public static void deleteOWLNamedIndividual(String owlNamedIndividual) {
+    public void deleteOWLNamedIndividual(String owlNamedIndividual) {
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        OWLDataFactory df = manager.getOWLDataFactory();
+        OWLOntology ontology = load(manager);
         if (!hasOWLNamedIndividual(owlNamedIndividual)){
             throw new RuntimeException("本体中不含有" + owlNamedIndividual +"实例");
         }
@@ -144,7 +164,7 @@ public class Demo {
         for (RemoveAxiom item : remover.getChanges()) {
             manager.applyChange(item);
         }
-        File outFile = new File(filePath);
+        File outFile = new File(configInfo.filePath);
         IRI outputIRI = IRI.create(outFile);
         try {
             manager.saveOntology(ontology, outputIRI);
@@ -153,7 +173,10 @@ public class Demo {
         }
     }
 
-    public static void deleteObjectProperty(String owlNameIndividualName1, String owlNameIndividualName2, String objectProperty){
+    public void deleteObjectProperty(String owlNameIndividualName1, String owlNameIndividualName2, String objectProperty){
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        OWLDataFactory df = manager.getOWLDataFactory();
+        OWLOntology ontology = load(manager);
         if (!hasOWLNamedIndividual(owlNameIndividualName1)) {
             throw new RuntimeException("本体中不存在" + owlNameIndividualName1 + "实例");
         }
@@ -174,7 +197,7 @@ public class Demo {
 
         File outFile = null;
         try {
-            outFile = ResourceUtils.getFile(filePath);
+            outFile = ResourceUtils.getFile(configInfo.filePath);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -187,14 +210,9 @@ public class Demo {
         }
     }
 
-    public static void main(String[] args) throws OWLOntologyCreationException {
-
-
-    }
-
-    public static OWLOntology load(OWLOntologyManager manager) {
+    public OWLOntology load(OWLOntologyManager manager) {
         StringBuilder content = new StringBuilder();
-        File outFile = new File(filePath);
+        File outFile = new File(configInfo.filePath);
         try {
             List<String> lines = Files.readAllLines(outFile.toPath(), StandardCharsets.UTF_8);
             lines.forEach(content::append);

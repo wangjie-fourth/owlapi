@@ -8,6 +8,7 @@ import com.jena.demo.util.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.io.FileNotFoundException;
 import java.util.Date;
 import java.util.Objects;
@@ -22,6 +23,8 @@ import java.util.Objects;
 @Service
 @Slf4j
 public class DemoService {
+    @Resource
+    private Demo demo;
 
     /**
      * 新增节点：也就是新增一个实例，可能为这个实例添加关系
@@ -30,13 +33,13 @@ public class DemoService {
      * @return
      */
     public ResultVO addNodeInstance(AddNodeInstanceVO addNodeInstanceVO) {
-        if (Demo.hasCLass(addNodeInstanceVO.getClassName()) && !Demo.hasOWLNamedIndividual(addNodeInstanceVO.getName())) {
+        if (demo.hasCLass(addNodeInstanceVO.getClassName()) && !demo.hasOWLNamedIndividual(addNodeInstanceVO.getName())) {
             log.info("添加实例");
-            Demo.createOWLNamedIndividual(addNodeInstanceVO.getClassName(), addNodeInstanceVO.getName());
+            demo.createOWLNamedIndividual(addNodeInstanceVO.getClassName(), addNodeInstanceVO.getName());
         }
         if (Objects.nonNull(addNodeInstanceVO.getRelationShips())) {
             for (RelationShip item : addNodeInstanceVO.getRelationShips()) {
-                Demo.createObjectPropertyForIndividual(addNodeInstanceVO.getName(), item.getObject(), item.getObjectPropoty());
+                demo.createObjectPropertyForIndividual(addNodeInstanceVO.getName(), item.getObject(), item.getObjectPropoty());
             }
         }
         return ResultVO.success(addNodeInstanceVO.getId(), new Date());
@@ -45,14 +48,14 @@ public class DemoService {
 
     public ResultVO deleteNodeInstance(DeleteNodeInstanceVO deleteNodeInstanceVO) throws FileNotFoundException {
         if (Objects.nonNull(deleteNodeInstanceVO.getName())){
-            Demo.deleteOWLNamedIndividual(deleteNodeInstanceVO.getName());
+            demo.deleteOWLNamedIndividual(deleteNodeInstanceVO.getName());
         }
         return ResultVO.success(deleteNodeInstanceVO.getId(), new Date());
     }
 
     public ResultVO deleteObjectProperty(DeleteRelationShipVo deleteRelationShipVo) {
         for (RelationShip item : deleteRelationShipVo.getRelationShips()) {
-            Demo.deleteObjectProperty(item.getSubject(), item.getObject(), item.getObjectPropoty());
+            demo.deleteObjectProperty(item.getSubject(), item.getObject(), item.getObjectPropoty());
         }
         return ResultVO.success(deleteRelationShipVo.getId(), new Date());
     }

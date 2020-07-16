@@ -93,14 +93,6 @@
         <rdf:type rdf:resource="http://www.semanticweb.org/administrator/ontologies/2020/5/untitled-ontology-9#Person"/>
         <liveIn rdf:resource="http://www.semanticweb.org/administrator/ontologies/2020/5/untitled-ontology-9#Heifei"/>
     </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/administrator/ontologies/2020/5/untitled-ontology-9#WANGJIE -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/administrator/ontologies/2020/5/untitled-ontology-9#WANGJIE">
-        <rdf:type rdf:resource="http://www.semanticweb.org/administrator/ontologies/2020/5/untitled-ontology-9#Person"/>
-    </owl:NamedIndividual>
 </rdf:RDF>
 
 
