@@ -4,7 +4,7 @@ import lombok.*;
 
 /**
  * @ClassName RelationShip
- * @Description 
+ * @Description
  * @Author wangjie
  * @Date 2020/7/4 11:37 下午
  * @Email wangjie_fourth@163.com

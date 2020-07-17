@@ -36,11 +36,12 @@ public class DemoController {
     /**
      * 新增节点：也就是新增一个实例，可能为这个实例添加关系
      *
-     * @param addNodeInstanceVO
-     * @return
+     * @param addNodeInstanceVO 添加节点信息
+     * @param bindingResult     校验规则
+     * @return  反应结果
      */
     @PostMapping("/addNodeInstance")
-    public ResultVO addNodeInstance(@RequestBody @Validated AddNodeInstanceVO addNodeInstanceVO, BindingResult bindingResult) throws FileNotFoundException {
+    public ResultVO addNodeInstance(@RequestBody @Validated AddNodeInstanceVO addNodeInstanceVO, BindingResult bindingResult) {
         if (Objects.isNull(addNodeInstanceVO)){
             return ResultVO.nullFail();
         }
@@ -54,8 +55,9 @@ public class DemoController {
     /**
      * 删除节点
      *
-     * @param deleteNodeInstanceVO
-     * @return
+     * @param deleteNodeInstanceVO  删除节点信息
+     * @return  反应结果
+     * @throws  FileNotFoundException   目标文件不存在
      */
     @PostMapping("/deleteNodeInstance")
     public ResultVO deleteNodeInstance(@RequestBody DeleteNodeInstanceVO deleteNodeInstanceVO) throws FileNotFoundException {
@@ -68,8 +70,8 @@ public class DemoController {
     /**
      * 删除对应节点的关系
      *
-     * @param deleteRelationShipVo
-     * @return
+     * @param deleteRelationShipVo  删除关系信息
+     * @return  反应结果
      */
     @PostMapping("/deleteObjectProperty")
     public ResultVO deleteRelationShip(@RequestBody DeleteRelationShipVo deleteRelationShipVo){

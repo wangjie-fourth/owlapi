@@ -11,8 +11,9 @@ import lombok.Getter;
  **/
 @Getter
 public enum OperationTypeEnum {
-    ADD_NODE(1, "添加节点"),
-    ;
+
+    ADD_NODE(1, "添加节点");
+
     private final Integer code;
     private final String msg;
 

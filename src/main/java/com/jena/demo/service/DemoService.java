@@ -29,8 +29,8 @@ public class DemoService {
     /**
      * 新增节点：也就是新增一个实例，可能为这个实例添加关系
      *
-     * @param addNodeInstanceVO
-     * @return
+     * @param addNodeInstanceVO 添加节点信息
+     * @return                  操作结果
      */
     public ResultVO addNodeInstance(AddNodeInstanceVO addNodeInstanceVO) {
         if (demo.hasCLass(addNodeInstanceVO.getClassName()) && !demo.hasOWLNamedIndividual(addNodeInstanceVO.getName())) {
@@ -47,7 +47,7 @@ public class DemoService {
 
 
     public ResultVO deleteNodeInstance(DeleteNodeInstanceVO deleteNodeInstanceVO) throws FileNotFoundException {
-        if (Objects.nonNull(deleteNodeInstanceVO.getName())){
+        if (Objects.nonNull(deleteNodeInstanceVO.getName())) {
             demo.deleteOWLNamedIndividual(deleteNodeInstanceVO.getName());
         }
         return ResultVO.success(deleteNodeInstanceVO.getId(), new Date());

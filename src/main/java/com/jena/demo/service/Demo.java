@@ -5,17 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.reasoner.BufferingMode;
-import org.semanticweb.owlapi.reasoner.Node;
-import org.semanticweb.owlapi.reasoner.OWLReasoner;
-import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
-import org.semanticweb.owlapi.reasoner.structural.StructuralReasoner;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.util.OWLEntityRemover;
-import org.semanticweb.owlapi.util.OWLObjectDesharer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.PropertyResolver;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
@@ -24,13 +16,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import static java.util.Collections.singleton;
-import static org.apache.coyote.http11.Constants.a;
 
 /**
  * @ClassName Demo
@@ -48,7 +37,6 @@ public class Demo {
 
     public static final String base = "http://www.semanticweb.org/administrator/ontologies/2020/5/untitled-ontology-9";
     public static final PrefixManager pm = new DefaultPrefixManager(null, null, base);
-
 
 
     public boolean hasCLass(String className) {
@@ -154,8 +142,8 @@ public class Demo {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         OWLDataFactory df = manager.getOWLDataFactory();
         OWLOntology ontology = load(manager);
-        if (!hasOWLNamedIndividual(owlNamedIndividual)){
-            throw new RuntimeException("本体中不含有" + owlNamedIndividual +"实例");
+        if (!hasOWLNamedIndividual(owlNamedIndividual)) {
+            throw new RuntimeException("本体中不含有" + owlNamedIndividual + "实例");
         }
 
         OWLEntityRemover remover = new OWLEntityRemover(singleton(ontology));
@@ -173,7 +161,7 @@ public class Demo {
         }
     }
 
-    public void deleteObjectProperty(String owlNameIndividualName1, String owlNameIndividualName2, String objectProperty){
+    public void deleteObjectProperty(String owlNameIndividualName1, String owlNameIndividualName2, String objectProperty) {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         OWLDataFactory df = manager.getOWLDataFactory();
         OWLOntology ontology = load(manager);
