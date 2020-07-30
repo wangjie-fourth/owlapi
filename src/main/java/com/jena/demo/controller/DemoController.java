@@ -62,7 +62,7 @@ public class DemoController {
     @PostMapping("/deleteNodeInstance")
     public ResultVO deleteNodeInstance(@RequestBody DeleteNodeInstanceVO deleteNodeInstanceVO) throws FileNotFoundException {
         if (Objects.isNull(deleteNodeInstanceVO)){
-            return ResultVO.nullFail();
+            return ResultVO.fail(deleteNodeInstanceVO.getId(), new Date(), "不存在要删除的节点");
         }
         return demoService.deleteNodeInstance(deleteNodeInstanceVO);
     }

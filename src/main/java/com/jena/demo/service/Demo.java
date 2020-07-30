@@ -35,8 +35,16 @@ public class Demo {
     @Autowired
     private ConfigInfo configInfo;
 
-    public static final String base = "http://www.semanticweb.org/administrator/ontologies/2020/5/untitled-ontology-9";
-    public static final PrefixManager pm = new DefaultPrefixManager(null, null, base);
+    public String getBase() {
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        OWLOntology ontology = load(manager);
+        if (!ontology.getOntologyID().getOntologyIRI().isPresent()) {
+            log.error("找不到base信息");
+            throw new RuntimeException("找不到对应的base信息");
+        }
+        return ontology.getOntologyID().getOntologyIRI().get().toString();
+    }
+
 
 
     public boolean hasCLass(String className) {
@@ -85,6 +93,7 @@ public class Demo {
     }
 
     public void createOWLNamedIndividual(String className, String owlNamedIndividualName) {
+        PrefixManager pm = new DefaultPrefixManager(null, null, getBase());
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         OWLDataFactory df = manager.getOWLDataFactory();
         OWLOntology ontology = load(manager);
@@ -107,6 +116,7 @@ public class Demo {
     }
 
     public void createObjectPropertyForIndividual(String owlNameIndividualName1, String owlNameIndividualName2, String objectProperty) {
+        PrefixManager pm = new DefaultPrefixManager(null, null, getBase());
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         OWLDataFactory df = manager.getOWLDataFactory();
         OWLOntology ontology = load(manager);
@@ -139,6 +149,7 @@ public class Demo {
     }
 
     public void deleteOWLNamedIndividual(String owlNamedIndividual) {
+        PrefixManager pm = new DefaultPrefixManager(null, null, getBase());
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         OWLDataFactory df = manager.getOWLDataFactory();
         OWLOntology ontology = load(manager);
@@ -162,6 +173,7 @@ public class Demo {
     }
 
     public void deleteObjectProperty(String owlNameIndividualName1, String owlNameIndividualName2, String objectProperty) {
+        PrefixManager pm = new DefaultPrefixManager(null, null, getBase());
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         OWLDataFactory df = manager.getOWLDataFactory();
         OWLOntology ontology = load(manager);
