@@ -1,5 +1,6 @@
 package com.jena.demo.controller.vo;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.*;
 
 import java.util.Date;
@@ -16,6 +17,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "I know what I'm doing")
 public class DeleteNodeInstanceVO {
     private String id;
     private Date updateTime;

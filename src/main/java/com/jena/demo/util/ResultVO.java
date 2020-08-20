@@ -1,5 +1,6 @@
 package com.jena.demo.util;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +15,7 @@ import java.util.Date;
  **/
 @Getter
 @Setter
+@SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "I know what I'm doing")
 public class ResultVO {
     private String id;
     private Date updateTime;

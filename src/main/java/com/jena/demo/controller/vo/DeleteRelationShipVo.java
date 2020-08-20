@@ -1,5 +1,6 @@
 package com.jena.demo.controller.vo;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,7 @@ import java.util.List;
  **/
 @Getter
 @Setter
+@SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "I know what I'm doing")
 public class DeleteRelationShipVo {
     private String id;
     private Date updateTime;

@@ -20,3 +20,4 @@ public class RelationShip {
     private String objectPropoty;
     private String object;
 }
+
