@@ -32,6 +32,7 @@ public class DemoService {
      *
      * @param addNodeInstanceVO 添加节点信息
      * @return 操作结果
+     * @throws  BusinessException   业务异常
      */
     public ResultVO addNodeInstance(AddNodeInstanceVO addNodeInstanceVO) throws BusinessException {
         if (!demo.hasCLass(addNodeInstanceVO.getClassName())) {

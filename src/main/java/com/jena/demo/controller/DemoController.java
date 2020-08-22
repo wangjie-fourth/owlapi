@@ -40,6 +40,7 @@ public class DemoController {
      * @param addNodeInstanceVO 添加节点信息
      * @param bindingResult     校验规则
      * @return  反应结果
+     * @throws  BusinessException   业务异常
      */
     @PostMapping("/addNodeInstance")
     public ResultVO addNodeInstance(@RequestBody @Validated AddNodeInstanceVO addNodeInstanceVO, BindingResult bindingResult) throws BusinessException {
