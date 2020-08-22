@@ -4,6 +4,7 @@ import com.jena.demo.controller.vo.AddNodeInstanceVO;
 import com.jena.demo.controller.vo.DeleteNodeInstanceVO;
 import com.jena.demo.controller.vo.DeleteRelationShipVo;
 import com.jena.demo.controller.vo.RelationShip;
+import com.jena.demo.exception.BusinessException;
 import com.jena.demo.util.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,16 +31,22 @@ public class DemoService {
      * 新增节点：也就是新增一个实例，可能为这个实例添加关系
      *
      * @param addNodeInstanceVO 添加节点信息
-     * @return                  操作结果
+     * @return 操作结果
      */
-    public ResultVO addNodeInstance(AddNodeInstanceVO addNodeInstanceVO) {
-        if (demo.hasCLass(addNodeInstanceVO.getClassName()) && !demo.hasOWLNamedIndividual(addNodeInstanceVO.getName())) {
+    public ResultVO addNodeInstance(AddNodeInstanceVO addNodeInstanceVO) throws BusinessException {
+        if (!demo.hasCLass(addNodeInstanceVO.getClassName())) {
+            log.warn("【" + addNodeInstanceVO.getClassName() + "】类不存在");
+            throw new BusinessException("【" + addNodeInstanceVO.getClassName() + "】类不存在");
+        }
+        if (!demo.hasOWLNamedIndividual(addNodeInstanceVO.getName())) {
+            log.info("不存在【" + addNodeInstanceVO.getName() + "】实例，开始新增");
             log.info("添加实例");
             demo.createOWLNamedIndividual(addNodeInstanceVO.getClassName(), addNodeInstanceVO.getName());
         }
+
         if (Objects.nonNull(addNodeInstanceVO.getRelationShips())) {
             for (RelationShip item : addNodeInstanceVO.getRelationShips()) {
-                demo.createObjectPropertyForIndividual(addNodeInstanceVO.getName(), item.getObject(), item.getObjectPropoty());
+                demo.createObjectPropertyForIndividual(item.getSubject(), item.getObject(), item.getObjectPropoty());
             }
         }
         return ResultVO.success(addNodeInstanceVO.getId(), new Date());

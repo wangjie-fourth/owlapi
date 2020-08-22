@@ -67,9 +67,10 @@ public class Demo {
         System.out.println("================" + "获取所有实例" + "==================");
         Set<OWLNamedIndividual> individualsInSignature = ontology.getIndividualsInSignature();
         for (OWLNamedIndividual item : individualsInSignature) {
-            String sourceIndividualName = item.getIRI().getFragment();
-            log.info("当前实例为：{}", sourceIndividualName);
-            if (owlNamedIndividualName.equals(sourceIndividualName)) {
+            String fullName = item.getIRI().getNamespace() + item.getIRI().getFragment();
+            String targetName = getBase() + "#" + owlNamedIndividualName;
+            log.info("当前实例为：{}", fullName);
+            if (targetName.equals(fullName)) {
                 return true;
             }
         }
@@ -122,13 +123,13 @@ public class Demo {
         OWLOntology ontology = load(manager);
         log.info("开始创建实例之间的关系");
         if (!hasOWLNamedIndividual(owlNameIndividualName1)) {
-            throw new RuntimeException("本体中不存在" + owlNameIndividualName1 + "实例");
+            throw new RuntimeException("本体中不存在【" + owlNameIndividualName1 + "】实例");
         }
         if (!hasOWLNamedIndividual(owlNameIndividualName2)) {
-            throw new RuntimeException("本体中不存在" + owlNameIndividualName2 + "实例");
+            throw new RuntimeException("本体中不存在【" + owlNameIndividualName2 + "】实例");
         }
         if (!hasObjectProperty(objectProperty)) {
-            throw new RuntimeException("本体中不存在" + objectProperty + "关系");
+            throw new RuntimeException("本体中不存在【" + objectProperty + "】关系");
         }
 
         OWLNamedIndividual owlNamedIndividual1 = df.getOWLNamedIndividual("#" + owlNameIndividualName1, pm);
@@ -154,7 +155,7 @@ public class Demo {
         OWLDataFactory df = manager.getOWLDataFactory();
         OWLOntology ontology = load(manager);
         if (!hasOWLNamedIndividual(owlNamedIndividual)) {
-            throw new RuntimeException("本体中不含有" + owlNamedIndividual + "实例");
+            throw new RuntimeException("本体中不含有【" + owlNamedIndividual + "】实例");
         }
 
         OWLEntityRemover remover = new OWLEntityRemover(singleton(ontology));

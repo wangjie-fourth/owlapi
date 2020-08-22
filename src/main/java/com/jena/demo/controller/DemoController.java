@@ -3,6 +3,7 @@ package com.jena.demo.controller;
 import com.jena.demo.controller.vo.AddNodeInstanceVO;
 import com.jena.demo.controller.vo.DeleteNodeInstanceVO;
 import com.jena.demo.controller.vo.DeleteRelationShipVo;
+import com.jena.demo.exception.BusinessException;
 import com.jena.demo.service.DemoService;
 import com.jena.demo.util.ResultVO;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +42,7 @@ public class DemoController {
      * @return  反应结果
      */
     @PostMapping("/addNodeInstance")
-    public ResultVO addNodeInstance(@RequestBody @Validated AddNodeInstanceVO addNodeInstanceVO, BindingResult bindingResult) {
+    public ResultVO addNodeInstance(@RequestBody @Validated AddNodeInstanceVO addNodeInstanceVO, BindingResult bindingResult) throws BusinessException {
         if (Objects.isNull(addNodeInstanceVO)){
             return ResultVO.nullFail();
         }
