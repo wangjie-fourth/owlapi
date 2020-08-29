@@ -25,7 +25,7 @@ import java.util.Objects;
 @Slf4j
 public class DemoService {
     @Resource
-    private Demo demo;
+    private OwlContentUtil owlContentUtil;
 
     /**
      * 新增节点：也就是新增一个实例，可能为这个实例添加关系
@@ -35,19 +35,19 @@ public class DemoService {
      * @throws  BusinessException   业务异常
      */
     public ResultVO addNodeInstance(AddNodeInstanceVO addNodeInstanceVO) throws BusinessException {
-        if (!demo.hasCLass(addNodeInstanceVO.getClassName())) {
+        if (!owlContentUtil.hasCLass(addNodeInstanceVO.getClassName())) {
             log.warn("【" + addNodeInstanceVO.getClassName() + "】类不存在");
             throw new BusinessException("【" + addNodeInstanceVO.getClassName() + "】类不存在");
         }
-        if (!demo.hasOWLNamedIndividual(addNodeInstanceVO.getName())) {
+        if (!owlContentUtil.hasOWLNamedIndividual(addNodeInstanceVO.getName())) {
             log.info("不存在【" + addNodeInstanceVO.getName() + "】实例，开始新增");
             log.info("添加实例");
-            demo.createOWLNamedIndividual(addNodeInstanceVO.getClassName(), addNodeInstanceVO.getName());
+            owlContentUtil.createOWLNamedIndividual(addNodeInstanceVO.getClassName(), addNodeInstanceVO.getName());
         }
 
         if (Objects.nonNull(addNodeInstanceVO.getRelationShips())) {
             for (RelationShip item : addNodeInstanceVO.getRelationShips()) {
-                demo.createObjectPropertyForIndividual(item.getSubject(), item.getObject(), item.getObjectPropoty());
+                owlContentUtil.createObjectPropertyForIndividual(item.getSubject(), item.getObject(), item.getObjectPropoty());
             }
         }
         return ResultVO.success(addNodeInstanceVO.getId(), new Date());
@@ -56,14 +56,14 @@ public class DemoService {
 
     public ResultVO deleteNodeInstance(DeleteNodeInstanceVO deleteNodeInstanceVO) throws FileNotFoundException {
         if (Objects.nonNull(deleteNodeInstanceVO.getName())) {
-            demo.deleteOWLNamedIndividual(deleteNodeInstanceVO.getName());
+            owlContentUtil.deleteOWLNamedIndividual(deleteNodeInstanceVO.getName());
         }
         return ResultVO.success(deleteNodeInstanceVO.getId(), new Date());
     }
 
     public ResultVO deleteObjectProperty(DeleteRelationShipVo deleteRelationShipVo) {
         for (RelationShip item : deleteRelationShipVo.getRelationShips()) {
-            demo.deleteObjectProperty(item.getSubject(), item.getObject(), item.getObjectPropoty());
+            owlContentUtil.deleteObjectProperty(item.getSubject(), item.getObject(), item.getObjectPropoty());
         }
         return ResultVO.success(deleteRelationShipVo.getId(), new Date());
     }

@@ -3301,6 +3301,23 @@
     
 
 
+    <!-- http://www.semanticweb.org/cheny/ontologies/2020/4/math#8.21yh测试数据1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cheny/ontologies/2020/4/math#8.21yh测试数据1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/cheny/ontologies/2020/4/math#小学数学知识点"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/cheny/ontologies/2020/4/math#8.21yh测试数据1.1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cheny/ontologies/2020/4/math#8.21yh测试数据1.1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/cheny/ontologies/2020/4/math#小学数学知识点"/>
+        <hasDirectPart rdf:resource="http://www.semanticweb.org/cheny/ontologies/2020/4/math#8.21yh测试数据1"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.semanticweb.org/cheny/ontologies/2020/4/math#公式法(平方差、完全平方公式) -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cheny/ontologies/2020/4/math#公式法(平方差、完全平方公式)">

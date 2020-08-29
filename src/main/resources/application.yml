@@ -2,4 +2,4 @@ server:
   port: 8081
 
 project:
-  filePath: /Users/wangjie_fourth/IdeaProjects/person/demo/src/main/resources/jena/mathv4.1.owl
+  filePath: /Users/wangjie_fourth/IdeaProjects/person/demo/src/main/resources/jena/mathv4.2.owl
